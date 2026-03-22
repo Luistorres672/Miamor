@@ -11,7 +11,7 @@
         * { padding: 0; margin: 0; box-sizing: border-box; }
 
         :root {
-            --color-bg-overlay: rgba(2, 6, 23, 0.8); /* Un poco más oscuro para mejor contraste */
+            --color-bg-overlay: rgba(2, 6, 23, 0.8);
             --line-color: linear-gradient(to top, #166534, #22c55e);
             --flower-center: radial-gradient(circle, #78350f, #451a03);
             --petal-color: radial-gradient(circle, #fde047, #eab308);
@@ -29,7 +29,17 @@
             cursor: crosshair;
         }
 
-        /* --- Slider de Fotos de Fondo con Efecto Ken Burns --- */
+        /* --- Canvas para Fuegos Artificiales --- */
+        #fireworks-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5; /* Por encima del fondo, por debajo del texto */
+        }
+
         #photo-background {
             position: fixed;
             top: 0; left: 0;
@@ -39,7 +49,7 @@
             background-position: center;
             background-repeat: no-repeat;
             transition: background-image 2s ease-in-out;
-            animation: kenBurns 20s infinite alternate; /* Zoom lento constante */
+            animation: kenBurns 20s infinite alternate;
         }
 
         .overlay {
@@ -61,7 +71,6 @@
             z-index: 10;
         }
 
-        /* --- Contador Premium --- */
         #timer {
             position: fixed;
             top: 20px;
@@ -102,7 +111,6 @@
             display: none;
         }
 
-        /* --- Estructura del Ramo --- */
         .bouquet {
             position: relative;
             height: 400px; width: 300px;
@@ -156,7 +164,6 @@
         @keyframes fade { to { opacity: 0; transform: scale(0); } }
         @keyframes heartFall { 0% { transform: translateY(-10vh); opacity: 0; } 10% { opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
         
-        /* Animación de Ken Burns para el fondo */
         @keyframes kenBurns {
             0% { transform: scale(1); background-position: center; }
             100% { transform: scale(1.15); background-position: top; }
@@ -170,6 +177,7 @@
 </head>
 <body>
     
+    <canvas id="fireworks-canvas"></canvas>
     <div id="photo-background"></div>
     <div class="overlay"></div>
 
@@ -194,26 +202,84 @@
     </div>
 
     <script>
-        // --- CONFIGURACIÓN AUTOMÁTICA DE 22 FOTOS (.jpeg) ---
-        // Genera la lista de fotos dinámicamente: foto1.jpeg, foto2.jpeg... hasta foto22.jpeg
         const totalFotos = 22;
         let fotos = [];
         for (let i = 1; i <= totalFotos; i++) {
             fotos.push(`foto${i}.jpeg`);
         }
 
-        // --- FECHA EXACTA: 31 OCT 2023 ---
-        const startDate = new Date(2023, 9, 31); // Mes 9 es Octubre en JS
-
+        const startDate = new Date(2023, 9, 31);
         const bgElement = document.getElementById('photo-background');
         const flowerBtn = document.getElementById("flower-btn");
         const mainContainer = document.getElementById("main-container");
         const audio = document.getElementById("song");
         const typewriterElement = document.getElementById("typewriter");
+        const canvas = document.getElementById('fireworks-canvas');
+        const ctx = canvas.getContext('2d');
 
         const messageText = "Desde aquel 31 de octubre, mi vida cambió de una manera que nunca imaginé. Ese día no solo marcó una fecha en el calendario, sino el inicio de algo que le dio un nuevo sentido a todo lo que soy. Desde entonces, cada momento a tu lado se ha convertido en un recuerdo que atesoro profundamente. Contigo aprendí que la felicidad no siempre está en lo extraordinario, sino en lo sencillo: en una conversación, en una mirada, en tu forma de hacerme sentir en paz incluso en los días más difíciles. Poco a poco te has convertido en mi refugio, en ese lugar al que siempre quiero volver, porque a tu lado todo se siente más bonito, más tranquilo, más real. Gracias por ser mi alegría en los días grises, por ser mi paz cuando todo parece complicado, y por llenar mi vida de luz sin siquiera intentarlo. No hay un solo día en el que no agradezca tenerte en mi vida. Te amo muchísimo ✨❤️";
 
-        // Función para barajar el arreglo de fotos (Lógica aleatoria)
+        // --- LÓGICA DE FUEGOS ARTIFICIALES ---
+        let fireworks = [];
+        let particles = [];
+        const colors = ['#AEC6CF', '#FFD1DC', '#B2DAFA', '#FFC0CB']; // Azul y Rosa Pastel
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x; this.y = y; this.color = color;
+                this.velocity = {
+                    x: (Math.random() - 0.5) * 8,
+                    y: (Math.random() - 0.5) * 8
+                };
+                this.alpha = 1;
+                this.friction = 0.95;
+            }
+            draw() {
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+            update() {
+                this.velocity.x *= this.friction;
+                this.velocity.y *= this.friction;
+                this.x += this.velocity.x;
+                this.y += this.velocity.y;
+                this.alpha -= 0.01;
+            }
+        }
+
+        function createFirework() {
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * (canvas.height * 0.5);
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            for (let i = 0; i < 40; i++) {
+                particles.push(new Particle(x, y, color));
+            }
+        }
+
+        function animateFireworks() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, i) => {
+                if (p.alpha <= 0) {
+                    particles.splice(i, 1);
+                } else {
+                    p.update();
+                    p.draw();
+                }
+            });
+            requestAnimationFrame(animateFireworks);
+        }
+
+        // --- LÓGICA EXISTENTE ---
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -222,23 +288,18 @@
             return array;
         }
 
-        // Barajamos las fotos una vez al inicio
         fotos = shuffle(fotos);
         let fotoActual = 0;
 
         function changeBackground() {
-            // Asigna la foto actual del arreglo barajado
             bgElement.style.backgroundImage = `url('${fotos[fotoActual]}')`;
-            
-            // Avanza al siguiente índice, y reinicia (y re-baraja) al llegar al final
             fotoActual++;
             if (fotoActual >= fotos.length) {
                 fotoActual = 0;
-                fotos = shuffle(fotos); // Re-barajamos para que el ciclo no sea predecible
+                fotos = shuffle(fotos);
             }
         }
 
-        // Rastro de Estrellas
         document.addEventListener('mousemove', (e) => {
             const s = document.createElement('div');
             s.className = 'sparkle';
@@ -248,7 +309,6 @@
             setTimeout(() => s.remove(), 1000);
         });
 
-        // Generar pétalos
         document.querySelectorAll('.sunflower').forEach(flower => {
             const wrapper = flower.querySelector('.flower_wrapper');
             const delay = parseFloat(getComputedStyle(flower).getPropertyValue('--base-delay'));
@@ -286,11 +346,13 @@
             flowerBtn.style.display = 'none';
             document.getElementById('initial-message').style.display = 'none';
 
-            // Inicia la primera foto y el ciclo aleatorio cada 5 segundos
             changeBackground();
             setInterval(changeBackground, 5000);
-            
             setInterval(updateTimer, 1000);
+
+            // Iniciar fuegos artificiales
+            animateFireworks();
+            setInterval(createFirework, 800);
 
             setTimeout(() => {
                 typewriterElement.style.display = 'block';
