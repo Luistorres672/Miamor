@@ -1,19 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <title>Flores amarrilas para mi amorcito</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Flores Amarillas para Mi Amor 🌻</title>
     
     <style>
+      :root {
+        --primary-pink: #f8bbd0;
+        --dark-pink: #ad1457;
+        --highlight-pink: #f06292;
+        --text-color: #880e4f;
+        --flower-yellow: #FFD700;
+        --flower-yellow-pale: #FFE082;
+      }
+
       * {
         padding: 0;
         margin: 0;
         box-sizing: border-box;
-        font-family: sans-serif;
+        font-family: 'Poppins', sans-serif;
+        -webkit-tap-highlight-color: transparent;
       }
 
       body {
@@ -22,95 +32,306 @@
         height: 100vh;
         justify-content: center;
         align-items: center;
-        background-color: #fce4ec;
+        background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+        overflow: hidden;
+        position: relative;
       }
 
+      /* =========================================
+         Estilos para Lluvia de Pétalos (Mejorada)
+         ========================================= */
+      .pentalos-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .petalo {
+        position: absolute;
+        border-radius: 50% 0 50% 50%; /* Forma de pétalo */
+        opacity: 0.9;
+        top: -20px; 
+        animation: caerVertical linear infinite;
+      }
+
+      /* Variaciones de tamaño y color */
+      .petalo.small { width: 8px; height: 8px; background-color: var(--flower-yellow); }
+      .petalo.medium { width: 12px; height: 12px; background-color: var(--flower-yellow-pale); }
+      .petalo.large { width: 16px; height: 16px; background-color: var(--flower-yellow); }
+
+      @keyframes caerVertical {
+        0% { 
+          transform: translateY(0) rotate(0deg) translateX(0); 
+          opacity: 0; 
+        }
+        10% { opacity: 0.9; }
+        /* Movimiento zig-zag suave */
+        25% { transform: translateY(25vh) rotate(180deg) translateX(15px); }
+        50% { transform: translateY(50vh) rotate(360deg) translateX(-15px); }
+        75% { transform: translateY(75vh) rotate(540deg) translateX(15px); }
+        90% { opacity: 0.9; }
+        100% { 
+          transform: translateY(105vh) rotate(720deg) translateX(-15px); 
+          opacity: 0; 
+        }
+      }
+
+      /* =========================================
+         Estilos del Contenedor Principal
+         ========================================= */
       .container {
-        width: 300px;
+        width: 330px;
         text-align: center;
-        padding: 20px;
-        background-color: #fff;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+        padding: 40px 25px;
+        background-color: rgba(255, 255, 255, 0.85);
+        border-radius: 30px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        position: relative;
+        z-index: 10;
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+      }
+
+      /* Animación de apertura exitosa */
+      .container.open {
+        transform: scale(1.1) translateY(-20px);
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      /* Animación de vibración para error */
+      .container.shake {
+        animation: shake 0.4s ease-in-out;
+      }
+
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        20%, 60% { transform: translateX(-10px); }
+        40%, 80% { transform: translateX(10px); }
+      }
+
+      /* Info de intentos/pista */
+      .attempts-info {
+        font-size: 0.8rem;
+        color: var(--dark-pink);
+        margin-bottom: 15px;
+        font-weight: 300;
+        min-height: 1.2rem;
       }
 
       .container h2 {
-        font-size: 1.7rem;
+        font-size: 1.5rem;
+        color: var(--text-color);
+        margin-bottom: 25px;
+        font-weight: 600;
+      }
+
+      .lock-icon {
+        font-size: 2.8rem;
+        margin-bottom: 12px;
+        display: block;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        transition: transform 0.3s ease;
+      }
+
+      /* Efecto de "abrir" el candado */
+      .lock-icon.open {
+        transform: scale(1.2) rotate(-15deg);
       }
 
       .input-display {
-        text-align: center;
-        margin: 0;
-        font-size: 30px;
-        margin: 10px 0;
+        letter-spacing: 10px;
+        color: var(--dark-pink);
+        font-size: 36px;
+        margin: 25px 0;
+        min-height: 54px;
+        transition: color 0.2s;
+      }
+
+      .input-display.error {
+        color: red;
       }
 
       .keypad {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
+        gap: 18px;
+        justify-items: center;
       }
 
       .keypad button {
-        padding: 15px;
-        font-size: 25px;
-        background-color: #f8bbd0;
-        border: 1px black solid;
-        outline: none;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        font-size: 24px;
+        font-weight: 400;
+        background-color: #fff;
+        color: var(--dark-pink);
+        border: 2px solid #fce4ec;
         cursor: pointer;
-        transition: background 0.2s;
+        transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        outline: none;
+        position: relative;
       }
 
-      .key:hover {
-        background-color: #f48fb1;
+      .keypad button::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: var(--flower-yellow);
+        border-radius: 50%;
+        opacity: 0;
+        transform: scale(1);
+        transition: transform 0.4s, opacity 0.4s;
+        pointer-events: none;
       }
 
-      .keypad button:last-child {
-        grid-column: 2/3;
+      .keypad button:active::after {
+        opacity: 0.4;
+        transform: scale(1.6);
+        transition: 0s;
+      }
+
+      .keypad button:hover {
+        background-color: var(--primary-pink);
+        border-color: var(--primary-pink);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 10px rgba(248, 187, 208, 0.5);
+      }
+
+      .keypad button:active {
+        transform: translateY(1px) scale(0.95);
+      }
+
+      .key-zero {
+        grid-column: 2;
       }
 
     </style>
   </head>
   <body>
-    <div class="container">
+
+    <div class="pentalos-container" id="petalosLayer"></div>
+
+    <div class="container" id="mainContainer">
+      <div class="attempts-info" id="attemptsInfo">Te quedan 3 besos 💋</div>
       <h2>
-        🔒<br />
-        Ingrese la contraseña
+        <span class="lock-icon" id="lockIcon">🔒</span>
+        Nuestra fecha especial
       </h2>
       <div class="input-display" id="inputDisplay">••••••</div>
       <div class="keypad">
-        <button class="key" onclick="enterDigit('1')">1</button>
-        <button class="key" onclick="enterDigit('2')">2</button>
-        <button class="key" onclick="enterDigit('3')">3</button>
-        <button class="key" onclick="enterDigit('4')">4</button>
-        <button class="key" onclick="enterDigit('5')">5</button>
-        <button class="key" onclick="enterDigit('6')">6</button>
-        <button class="key" onclick="enterDigit('7')">7</button>
-        <button class="key" onclick="enterDigit('9')">9</button>
-        <button class="key" onclick="enterDigit('8')">8</button>
-        <button class="key" onclick="enterDigit('0')">0</button>
+        <button onclick="enterDigit(this, '1')">1</button>
+        <button onclick="enterDigit(this, '2')">2</button>
+        <button onclick="enterDigit(this, '3')">3</button>
+        <button onclick="enterDigit(this, '4')">4</button>
+        <button onclick="enterDigit(this, '5')">5</button>
+        <button onclick="enterDigit(this, '6')">6</button>
+        <button onclick="enterDigit(this, '7')">7</button>
+        <button onclick="enterDigit(this, '8')">8</button>
+        <button onclick="enterDigit(this, '9')">9</button>
+        <button class="key-zero" onclick="enterDigit(this, '0')">0</button>
       </div>
     </div>
 
     <script>
-      const correctPassword = "311023";
+      const correctPassword = "311023"; 
       const display = document.getElementById("inputDisplay");
+      const container = document.getElementById("mainContainer");
+      const petalosLayer = document.getElementById("petalosLayer");
+      const lockIcon = document.getElementById("lockIcon");
+      const attemptsInfo = document.getElementById("attemptsInfo");
+      
       let input = "";
-      function enterDigit(digit) {
+      let attempts = 3;
+
+      // =========================================
+      // JavaScript para Pétalos Variados
+      // =========================================
+      function crearPetalos() {
+        const numeroDePetalos = 70; // Aumentamos la cantidad inicial
+        const types = ['small', 'medium', 'large'];
+        
+        for (let i = 0; i < numeroDePetalos; i++) {
+          const petalo = document.createElement('div');
+          petalo.classList.add('petalo');
+          
+          // Asignar tipo aleatorio
+          const type = types[Math.floor(Math.random() * types.length)];
+          petalo.classList.add(type);
+          
+          petalo.style.left = Math.random() * 100 + 'vw';
+          petalo.style.animationDuration = (Math.random() * 5 + 4) + 's'; // Entre 4 y 9 segundos
+          petalo.style.animationDelay = (Math.random() * 8) + 's'; // Retraso mayor al inicio
+
+          petalosLayer.appendChild(petalo);
+        }
+      }
+      
+      crearPetalos();
+
+      // =========================================
+      // Lógica de entrada con Intentos y Pista
+      // =========================================
+      function enterDigit(btn, digit) {
         if (input.length < 6) {
           input += digit;
         }
+        
         display.textContent = input.padEnd(6, "•");
+
         if (input.length === 6) {
           if (input === correctPassword) {
-            window.location.href = "flower.html"; 
+            // ÉXITO
+            // 1. Cambiar icono y animar contenedor
+            lockIcon.textContent = "🔓";
+            lockIcon.classList.add('open');
+            container.classList.add('open');
+            attemptsInfo.textContent = "¡Abierto con amor! 🌻";
+            attemptsInfo.style.color = "var(--flower-yellow)";
+
+            // 2. Redirigir
+            setTimeout(() => {
+                window.location.href = "flower.html"; 
+            }, 600); // Delay mayor para la animación
           } else {
-            alert("Contraseña incorecta, intenta de nuevo");
-            input = "";
-            display.textContent = "••••••";
+            // ERROR
+            attempts--;
+            
+            container.classList.add('shake');
+            display.classList.add('error');
+            
+            if (attempts > 0) {
+              attemptsInfo.textContent = `Te quedan ${attempts} besos 💋`;
+              if (attempts === 1) {
+                // PISTA ROMÁNTICA
+                attemptsInfo.textContent = "Nuestro Aniversario... 🤔";
+                attemptsInfo.style.fontWeight = "600";
+              }
+            } else {
+              attemptsInfo.textContent = "Se acabaron los besos... ¡intenta de nuevo! ❤️";
+              attempts = 3; // Reiniciamos intentos
+            }
+            
+            setTimeout(() => {
+                input = "";
+                display.textContent = "••••••";
+                container.classList.remove('shake');
+                display.classList.remove('error');
+            }, 600);
           }
         }
       }
     </script>
   </body>
-</html>
 </html>
