@@ -11,13 +11,17 @@
         * { padding: 0; margin: 0; box-sizing: border-box; }
 
         :root {
-            --color-bg-overlay: rgba(2, 6, 23, 0.85);
+            /* Colores de fondo mejorados */
+            --bg-deep: #020617;
+            --bg-glow: #0f172a;
+            --nebula-color: rgba(30, 58, 138, 0.2);
+            
             --line-color: linear-gradient(to left top, #82ff86 20%, #144425, #104e1c);
             --flower-center: radial-gradient(circle, #000, #ff5e00);
             --petal-color: radial-gradient(circle, #ff5e00, #ffbb00);
             --leaf-color: radial-gradient(circle, #82ff86, #104e1c);
             --text-color: #ffffff;
-            --glass-bg: rgba(15, 23, 42, 0.7);
+            --glass-bg: rgba(15, 23, 42, 0.75);
             --glass-border: rgba(255, 255, 255, 0.1);
             --accent-yellow: #facc15;
             --accent-purple: #9333ea; 
@@ -25,7 +29,7 @@
         }
 
         body {
-            background-color: #020617;
+            background-color: var(--bg-deep);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -33,6 +37,45 @@
             overflow: hidden;
             font-family: "Poppins", sans-serif;
             color: white;
+            position: relative;
+        }
+
+        /* --- Fondo Mejorado (Nebulosa y Estrellas) --- */
+        .background-visuals {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg-deep) 100%);
+            overflow: hidden;
+        }
+
+        .nebula {
+            position: absolute;
+            width: 150%; height: 150%;
+            top: -25%; left: -25%;
+            background: radial-gradient(circle at 30% 30%, var(--nebula-color) 0%, transparent 40%),
+                        radial-gradient(circle at 70% 60%, rgba(88, 28, 135, 0.15) 0%, transparent 40%);
+            filter: blur(80px);
+            animation: nebulaRotate 60s linear infinite;
+        }
+
+        @keyframes nebulaRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: twinkle var(--duration) infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
         }
 
         /* --- Fondos y Capas --- */
@@ -48,8 +91,27 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: var(--color-bg-overlay);
+            background: rgba(2, 6, 23, 0.4); 
             z-index: -1;
+        }
+
+        /* --- EFECTO LUCIÉRNAGAS MEJORADO --- */
+        .ambient-particle {
+            position: fixed;
+            background: #facc15;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 2;
+            box-shadow: 0 0 10px #facc15, 0 0 20px #eab308;
+            filter: blur(0.5px);
+            animation: floatAmbient linear infinite;
+        }
+
+        @keyframes floatAmbient {
+            from { transform: translateY(0) translateX(0); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            to { transform: translateY(-100vh) translateX(100px); opacity: 0; }
         }
 
         /* --- Estructura del Contenedor Principal --- */
@@ -90,7 +152,7 @@
             padding: 25px;
             border-radius: 20px;
             background: var(--glass-bg);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(15px);
             border: 1px solid var(--glass-border);
             box-shadow: 0 15px 40px rgba(0,0,0,0.6);
             max-height: 70vh;
@@ -107,7 +169,7 @@
             width: 300px;
             background: white;
             padding: 12px 12px 50px 12px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 45px rgba(0,0,0,0.7);
             transition: all 0.5s ease;
             border: 1px solid #ddd;
             display: none;
@@ -118,7 +180,6 @@
             width: 100%;
             height: 280px;
             object-fit: cover;
-            filter: sepia(0.1);
             transition: opacity 1s ease-in-out;
         }
 
@@ -134,7 +195,7 @@
             color: #333;
         }
 
-        /* --- SECCIÓN DEL RAMO (ESTILO NUEVO) --- */
+        /* --- SECCIÓN DEL RAMO --- */
         .bouquet {
             position: relative;
             height: 450px;
@@ -171,6 +232,7 @@
             background: var(--flower-center); 
             z-index: 20; 
             opacity: 0;
+            box-shadow: 0 0 20px rgba(255, 94, 0, 0.3);
         }
         .container.active .flower_center { 
             animation: open-flower-center 1s ease-out forwards; 
@@ -193,7 +255,6 @@
             animation: open-flower-petal 1s ease-out forwards; 
         }
 
-        /* --- Hojas del tallo --- */
         .flower_leaf {
             position: absolute;
             width: 50px;
@@ -207,20 +268,6 @@
         .container.active .flower_leaf { opacity: 1; }
         .flower_leaf-1 { left: 50%; bottom: 120px; transform: translateX(10%) rotate(60deg); }
         .flower_leaf-2 { left: 50%; bottom: 180px; transform: translateX(-110%) rotate(-60deg); }
-
-        /* --- Elementos de decoración del ramo --- */
-        .bouquet_accent {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: var(--accent-purple);
-            border-radius: 50%;
-            opacity: 0;
-            transition: opacity 1s ease 2s;
-        }
-        .container.active .bouquet_accent { opacity: 1; }
-        .bouquet_accent--1 { bottom: 180px; left: 50%; transform: translateX(-120px); animation: pulsepurple 3s infinite 2s; }
-        .bouquet_accent--2 { bottom: 220px; left: 50%; transform: translateX(100px); animation: pulsepurple 3s infinite 2.5s; }
 
         .bouquet_ribbon {
             position: absolute;
@@ -237,32 +284,34 @@
         }
         .container.active .bouquet_ribbon { opacity: 1; }
 
-        /* --- Temporizador --- */
+        /* --- Temporizador (Más grande ahora) --- */
         #timer {
             position: fixed;
-            top: 30px;
+            top: 40px;
             color: #fff;
             font-weight: 600;
-            font-size: 0.75rem;
+            font-size: 1.2rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            background: rgba(255, 255, 255, 0.1);
+            letter-spacing: 3px;
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(15px);
-            padding: 10px 25px;
+            padding: 15px 40px;
             border-radius: 100px;
             border: 1px solid var(--glass-border);
             opacity: 0;
             transition: all 1s ease;
             z-index: 30;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         .container.active #timer { opacity: 1; }
 
         #initial-message {
             color: #f1f5f9;
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             font-family: 'Dancing Script', cursive;
             margin-bottom: 2rem;
             text-align: center;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
         }
 
         .flower-btn {
@@ -270,47 +319,47 @@
             font-size: 1.1rem;
             cursor: pointer;
             color: #fff;
+            font-weight: 600;
             background: linear-gradient(45deg, #ffbb00, #ff5e00);
             border: none;
             border-radius: 50px;
             z-index: 30;
             transition: 0.5s;
             position: relative;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 25px rgba(255, 94, 0, 0.4);
         }
-        .flower-btn:hover { transform: scale(1.05); }
+        .flower-btn:hover { transform: scale(1.05); box-shadow: 0 12px 30px rgba(255, 94, 0, 0.6); }
 
-        .sparkle { position: fixed; width: 4px; height: 4px; background: white; border-radius: 50%; pointer-events: none; animation: fade 0.8s forwards; z-index: 100; }
         #heart-rain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 8; }
-        .heart { position: absolute; animation: heartFall linear forwards; }
+        .heart { position: absolute; animation: heartFall linear forwards; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
 
-        /* Animaciones del Nuevo Estilo */
         @keyframes open-flower-petal {
             0% { transform: translateX(-50%) translateY(50px) rotate(0deg); opacity: 0; }
             50% { opacity: 1; }
             100% { transform: translateX(-50%) translateY(0) rotate(var(--rotate-deg)); opacity: 1; }
         }
-
         @keyframes open-flower-center {
             0% { transform: translateX(-50%) scale(0); opacity: 0; }
             100% { transform: translateX(-50%) scale(1); opacity: 1; }
         }
-
         @keyframes sway { 0%, 100% { transform: rotate(-1.5deg); } 50% { transform: rotate(1.5deg); } }
-        @keyframes fade { to { opacity: 0; transform: scale(0); } }
         @keyframes heartFall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
-        @keyframes pulsepurple { 0%, 100% { opacity: 0.5; transform: scale(1) translateX(var(--tx)); } 50% { opacity: 1; transform: scale(1.5) translateX(var(--tx)); } }
 
         @media (max-width: 900px) {
             .content-layout { flex-direction: column; align-items: center; margin-top: 20px; }
             .text-section { width: 90%; margin-bottom: 20px; max-height: 30vh; }
             .photo-frame { width: 240px; margin-bottom: 20px; }
             .bouquet { transform: scale(0.6); height: 300px; margin-top: -50px; }
+            #timer { font-size: 0.9rem; padding: 10px 25px; top: 20px; }
         }
     </style>
 </head>
 <body>
     
+    <div class="background-visuals">
+        <div class="nebula"></div>
+        <div id="stars-container"></div>
+    </div>
     <canvas id="fireworks-canvas"></canvas>
     <div class="overlay"></div>
 
@@ -336,10 +385,6 @@
             <div class="bouquet" id="bouquet">
                 <div class="bouquet_ribbon"></div>
                 
-                <div class="bouquet_accent bouquet_accent--1" style="--tx: -120px;"></div>
-                <div class="bouquet_accent bouquet_accent--2" style="--tx: 100px;"></div>
-
-                <!-- Flor 2 (Izquierda) -->
                 <div class="sunflower sunflower--2">
                     <div class="flower_wrapper">
                         <div class="flower_stem"></div>
@@ -349,7 +394,6 @@
                     </div>
                 </div>
                 
-                <!-- Flor 3 (Derecha) -->
                 <div class="sunflower sunflower--3">
                     <div class="flower_wrapper">
                         <div class="flower_stem"></div>
@@ -357,7 +401,6 @@
                     </div>
                 </div>
                 
-                <!-- Flor 1 (Centro) -->
                 <div class="sunflower sunflower--1">
                     <div class="flower_wrapper">
                         <div class="flower_stem"></div>
@@ -369,6 +412,22 @@
     </div>
 
     <script>
+        // Configuración de Estrellas
+        const starsContainer = document.getElementById('stars-container');
+        const starCount = 150;
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 2 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+            star.style.animationDelay = Math.random() * 5 + 's';
+            starsContainer.appendChild(star);
+        }
+
         const totalFotos = 22;
         let fotos = Array.from({length: totalFotos}, (_, i) => `foto${i+1}.jpeg`);
         const startDate = new Date(2023, 9, 31);
@@ -404,6 +463,21 @@
             const y = Math.random() * (canvas.height * 0.5);
             for(let i=0; i<30; i++) particles.push(new FireworkParticle(x, y, colors[Math.floor(Math.random() * colors.length)]));
         }
+
+        function createAmbientParticle() {
+            const p = document.createElement('div');
+            p.className = 'ambient-particle';
+            const size = Math.random() * 4 + 2;
+            p.style.width = size + 'px';
+            p.style.height = size + 'px';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.bottom = '-20px';
+            p.style.animationDuration = (Math.random() * 8 + 7) + 's';
+            p.style.opacity = Math.random() * 0.5;
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 15000);
+        }
+        setInterval(createAmbientParticle, 500);
 
         function animate() {
             ctx.clearRect(0,0, canvas.width, canvas.height);
@@ -454,27 +528,16 @@
             setTimeout(() => h.remove(), 5000);
         }
 
-        // Generar pétalos con el nuevo estilo y retraso
         document.querySelectorAll('.sunflower').forEach(flower => {
             const wrapper = flower.querySelector('.flower_wrapper');
             const flowerDelay = parseFloat(getComputedStyle(flower).getPropertyValue('--base-delay')) || 0;
-            
             for (let i = 0; i < 12; i++) {
                 const p = document.createElement('div');
                 p.className = 'flower_petal';
                 p.style.setProperty('--rotate-deg', `${i * 30}deg`);
-                // Combinamos el retraso de la flor con el retraso individual del pétalo
                 p.style.animationDelay = `${flowerDelay + 1.2 + (i * 0.05)}s`;
                 wrapper.appendChild(p);
             }
-        });
-
-        document.addEventListener('mousemove', (e) => {
-            const s = document.createElement('div');
-            s.className = 'sparkle';
-            s.style.left = e.clientX + 'px'; s.style.top = e.clientY + 'px';
-            document.body.appendChild(s);
-            setTimeout(() => s.remove(), 800);
         });
 
         flowerBtn.addEventListener('click', () => {
