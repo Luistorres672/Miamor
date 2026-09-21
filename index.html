@@ -34,12 +34,13 @@
     body {
       display: flex;
       width: 100vw;
-      height: 100vh;
+      min-height: 100vh;
       justify-content: center;
       align-items: center;
       background: radial-gradient(circle at center, #fff0f5 0%, #fce4ec 50%, #f8bbd0 100%);
       overflow: hidden;
       position: relative;
+      padding: 15px;
     }
 
     /* Lluvia de pétalos canvas */
@@ -55,10 +56,12 @@
 
     /* Contenedor principal Glassmorphism */
     .container {
-      width: 350px;
-      max-width: 90vw;
+      width: 100%;
+      max-width: 380px;
+      max-height: 90vh;
+      overflow-y: auto;
       text-align: center;
-      padding: 35px 25px;
+      padding: 30px 20px;
       background: var(--glass-bg);
       border-radius: 35px;
       box-shadow: 0 20px 40px var(--shadow-color), 0 0 0 1px var(--glass-border);
@@ -67,6 +70,10 @@
       position: relative;
       z-index: 10;
       transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
+    }
+
+    .container::-webkit-scrollbar {
+      display: none;
     }
 
     /* Animación de apertura hacia flower.html */
@@ -98,9 +105,9 @@
     }
 
     .container h2 {
-      font-size: 1.35rem;
+      font-size: 1.25rem;
       color: var(--text-color);
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       font-weight: 600;
       display: flex;
       align-items: center;
@@ -109,7 +116,7 @@
     }
 
     .lock-icon {
-      font-size: 2.2rem;
+      font-size: 2rem;
       display: inline-block;
       filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
       transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -124,14 +131,14 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 12px;
-      margin: 20px 0 30px;
-      min-height: 40px;
+      gap: 10px;
+      margin: 15px 0 25px;
+      min-height: 30px;
     }
 
     .dot {
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
       border: 2px solid var(--highlight-pink);
       background-color: transparent;
@@ -166,15 +173,18 @@
     .keypad {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
+      gap: 12px;
       justify-items: center;
+      width: 100%;
+      max-width: 280px;
+      margin: 0 auto;
     }
 
     .keypad button {
-      width: 65px;
-      height: 65px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 500;
       background: white;
       color: var(--dark-pink);
@@ -203,7 +213,7 @@
     }
 
     .btn-action {
-      font-size: 1.1rem !important;
+      font-size: 1rem !important;
       background-color: rgba(255, 255, 255, 0.5) !important;
       border-color: transparent !important;
     }
@@ -222,6 +232,39 @@
       to {
         transform: scale(3);
         opacity: 0;
+      }
+    }
+
+    /* Media Queries Responsive */
+    @media (max-width: 480px) {
+      .container {
+        padding: 24px 16px;
+        border-radius: 28px;
+      }
+      .container h2 {
+        font-size: 1.1rem;
+      }
+      .keypad {
+        gap: 10px;
+      }
+      .keypad button {
+        width: 52px;
+        height: 52px;
+        font-size: 1.15rem;
+      }
+    }
+
+    @media (max-height: 650px) {
+      .container {
+        padding: 16px 14px;
+      }
+      .pin-display {
+        margin: 10px 0 15px;
+      }
+      .keypad button {
+        width: 46px;
+        height: 46px;
+        font-size: 1rem;
       }
     }
   </style>
@@ -270,7 +313,7 @@
   <script>
     // Configuración inicial
     const correctPassword = "311023";
-    const targetURL = "flower.html"; // Redirección al archivo externo
+    const targetURL = "flower.html";
     
     let input = "";
     let attempts = 3;
