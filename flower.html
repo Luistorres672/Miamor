@@ -1,566 +1,744 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nuestra Historia ✨🌻</title>
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        amber: { 450: '#F59E0B' },
+                        rose: { 450: '#F43F5E' }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        cursive: ['"Dancing Script"', 'cursive'],
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 3s infinite ease-in-out',
+                        'float-slow': 'floatSlow 6s ease-in-out infinite',
+                        'spin-slow': 'spin 25s linear infinite',
+                        'sway-bouquet': 'swayBouquet 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { opacity: '0.6', filter: 'drop-shadow(0 0 15px rgba(245, 158, 11, 0.4))' },
+                            '50%': { opacity: '1', filter: 'drop-shadow(0 0 25px rgba(245, 158, 11, 0.8))' }
+                        },
+                        floatSlow: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        swayBouquet: {
+                            '0%, 100%': { transform: 'rotate(-2deg)' },
+                            '50%': { transform: 'rotate(2deg)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        * { padding: 0; margin: 0; box-sizing: border-box; }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); border-radius: 8px; }
+        ::-webkit-scrollbar-thumb { background: rgba(245, 158, 11, 0.5); border-radius: 8px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(245, 158, 11, 0.8); }
 
-        :root {
-            /* Colores de fondo mejorados */
-            --bg-deep: #020617;
-            --bg-glow: #0f172a;
-            --nebula-color: rgba(30, 58, 138, 0.2);
-            
-            --line-color: linear-gradient(to left top, #82ff86 20%, #144425, #104e1c);
-            --flower-center: radial-gradient(circle, #000, #ff5e00);
-            --petal-color: radial-gradient(circle, #ff5e00, #ffbb00);
-            --leaf-color: radial-gradient(circle, #82ff86, #104e1c);
-            --text-color: #ffffff;
-            --glass-bg: rgba(15, 23, 42, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --accent-yellow: #facc15;
-            --accent-purple: #9333ea; 
-            --ribbon-color: #be123c;
+        /* Glassmorphic Cards */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
         }
 
-        body {
-            background-color: var(--bg-deep);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            font-family: "Poppins", sans-serif;
-            color: white;
-            position: relative;
+        .glass-card-glow {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            box-shadow: 0 0 35px rgba(245, 158, 11, 0.2), 0 20px 50px rgba(0,0,0,0.7);
         }
 
-        /* --- Fondo Mejorado (Nebulosa y Estrellas) --- */
-        .background-visuals {
+        /* Ambient floating items (Corazones y Girasoles) */
+        .ambient-item {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -2;
-            background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg-deep) 100%);
-            overflow: hidden;
-        }
-
-        .nebula {
-            position: absolute;
-            width: 150%; height: 150%;
-            top: -25%; left: -25%;
-            background: radial-gradient(circle at 30% 30%, var(--nebula-color) 0%, transparent 40%),
-                        radial-gradient(circle at 70% 60%, rgba(88, 28, 135, 0.15) 0%, transparent 40%);
-            filter: blur(80px);
-            animation: nebulaRotate 60s linear infinite;
-        }
-
-        @keyframes nebulaRotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            opacity: 0.3;
-            animation: twinkle var(--duration) infinite ease-in-out;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-
-        /* --- Fondos y Capas --- */
-        #fireworks-canvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
             pointer-events: none;
-            z-index: 5;
+            z-index: 12;
+            user-select: none;
+            will-change: transform, opacity;
+            animation: floatUp linear forwards;
         }
 
-        .overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(2, 6, 23, 0.4); 
-            z-index: -1;
+        @keyframes floatUp {
+            0% {
+                transform: translateY(105vh) translateX(0) scale(0.6) rotate(0deg);
+                opacity: 0;
+            }
+            15% { opacity: var(--max-opacity, 0.85); }
+            85% { opacity: var(--max-opacity, 0.85); }
+            100% {
+                transform: translateY(-10vh) translateX(var(--drift, 50px)) scale(1.1) rotate(var(--rotation, 180deg));
+                opacity: 0;
+            }
         }
 
-        /* --- EFECTO LUCIÉRNAGAS MEJORADO --- */
-        .ambient-particle {
-            position: fixed;
-            background: #facc15;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 2;
-            box-shadow: 0 0 10px #facc15, 0 0 20px #eab308;
-            filter: blur(0.5px);
-            animation: floatAmbient linear infinite;
+        /* Polaroid Photo Frame */
+        .polaroid-frame {
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.8), 0 0 15px rgba(251, 191, 36, 0.2);
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.6s ease;
+        }
+        .polaroid-frame:hover {
+            transform: scale(1.03) rotate(0deg) !important;
+            box-shadow: 0 25px 45px -5px rgba(0, 0, 0, 0.9), 0 0 25px rgba(251, 191, 36, 0.4);
         }
 
-        @keyframes floatAmbient {
-            from { transform: translateY(0) translateX(0); opacity: 0; }
-            20% { opacity: 0.8; }
-            80% { opacity: 0.8; }
-            to { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        /* Typewriter Cursor */
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 0.8s infinite;
+            color: #F59E0B;
+            font-weight: bold;
         }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-        /* --- Estructura del Contenedor Principal --- */
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            padding: 20px;
-            width: 100%;
-            height: 100vh;
-            z-index: 10;
+        /* Sunflower Petal Bloom Effects */
+        .sunflower-flower {
+            transform-origin: center center;
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-
-        .content-layout {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-around;
-            width: 95%;
-            max-width: 1400px;
-            margin-top: 60px;
-            display: none;
-        }
-
-        .container.active .content-layout {
-            display: flex;
-        }
-
-        /* --- Sección del Texto --- */
-        .text-section {
-            width: 35%;
-            color: var(--text-color);
-            font-weight: 300;
-            font-size: clamp(0.75rem, 2.5vw, 0.95rem);
-            line-height: 1.8;
-            padding: 25px;
-            border-radius: 20px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-            max-height: 70vh;
-            overflow-y: auto;
-            border-left: 4px solid var(--accent-yellow);
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
-        .container.active .text-section { opacity: 1; }
-
-        /* --- Sección de la Foto --- */
-        .photo-frame {
-            position: relative;
-            width: 300px;
-            background: white;
-            padding: 12px 12px 50px 12px;
-            box-shadow: 0 15px 45px rgba(0,0,0,0.7);
-            transition: all 0.5s ease;
-            border: 1px solid #ddd;
-            display: none;
-            transform: rotate(2deg);
-        }
-
-        .photo-frame img {
-            width: 100%;
-            height: 280px;
-            object-fit: cover;
-            transition: opacity 1s ease-in-out;
-        }
-
-        .photo-frame::after {
-            content: "Nuestros Momentos ✨";
-            position: absolute;
-            bottom: 12px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.4rem;
-            color: #333;
-        }
-
-        /* --- SECCIÓN DEL RAMO --- */
-        .bouquet {
-            position: relative;
-            height: 450px;
-            width: 350px;
-            animation: sway 7s ease-in-out infinite;
-            pointer-events: none;
-            z-index: 15;
-            opacity: 0;
-            transition: opacity 1s ease 1s;
-        }
-        .container.active .bouquet { opacity: 1; }
-
-        .sunflower { position: absolute; bottom: 0; left: 50%; transform-origin: bottom center; }
-        .sunflower--1 { transform: translateX(-50%) scale(0.7); z-index: 15; --base-delay: 0.4s; }
-        .sunflower--2 { transform: translateX(-130%) rotate(-20deg) scale(0.6); z-index: 10; --base-delay: 0.2s; }
-        .sunflower--3 { transform: translateX(30%) rotate(20deg) scale(0.6); z-index: 10; --base-delay: 0.6s; }
         
-        .flower_stem { 
-            width: 15px; 
-            height: 350px; 
-            background: var(--line-color); 
-            border-radius: 15px; 
-            margin: 0 auto; 
-        }
-
-        .flower_center { 
-            position: absolute; 
-            top: 0; 
-            left: 50%; 
-            transform: translate(-50%, -50%) scale(0); 
-            width: 100px; 
-            height: 100px; 
-            border-radius: 50%; 
-            background: var(--flower-center); 
-            z-index: 20; 
-            opacity: 0;
-            box-shadow: 0 0 20px rgba(255, 94, 0, 0.3);
-        }
-        .container.active .flower_center { 
-            animation: open-flower-center 1s ease-out forwards; 
-            animation-delay: calc(var(--base-delay) + 1s); 
-        }
-
-        .flower_petal { 
-            position: absolute; 
-            width: 50px; 
-            height: 100px; 
-            background: var(--petal-color); 
-            clip-path: ellipse(35% 50% at 50% 50%); 
-            top: -50px; 
-            left: 50%; 
-            transform-origin: center bottom; 
-            z-index: 10; 
-            opacity: 0; 
-        }
-        .container.active .flower_petal { 
-            animation: open-flower-petal 1s ease-out forwards; 
-        }
-
-        .flower_leaf {
-            position: absolute;
-            width: 50px;
-            height: 90px;
-            background: var(--leaf-color);
-            border-radius: 100px 20px 100px 20px;
-            transform-origin: center bottom;
-            opacity: 0;
-            transition: opacity 1s ease 2s;
-        }
-        .container.active .flower_leaf { opacity: 1; }
-        .flower_leaf-1 { left: 50%; bottom: 120px; transform: translateX(10%) rotate(60deg); }
-        .flower_leaf-2 { left: 50%; bottom: 180px; transform: translateX(-110%) rotate(-60deg); }
-
-        .bouquet_ribbon {
-            position: absolute;
-            bottom: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 25px;
-            background: var(--ribbon-color);
-            border-radius: 5px;
-            z-index: 16;
-            opacity: 0;
-            transition: opacity 1s ease 1s;
-        }
-        .container.active .bouquet_ribbon { opacity: 1; }
-
-        /* --- Temporizador (Más grande ahora) --- */
-        #timer {
-            position: fixed;
-            top: 40px;
-            color: #fff;
-            font-weight: 600;
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            padding: 15px 40px;
-            border-radius: 100px;
-            border: 1px solid var(--glass-border);
-            opacity: 0;
-            transition: all 1s ease;
-            z-index: 30;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .container.active #timer { opacity: 1; }
-
-        #initial-message {
-            color: #f1f5f9;
-            font-size: 1.6rem;
-            font-family: 'Dancing Script', cursive;
-            margin-bottom: 2rem;
-            text-align: center;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-        }
-
-        .flower-btn {
-            padding: 15px 45px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            color: #fff;
-            font-weight: 600;
-            background: linear-gradient(45deg, #ffbb00, #ff5e00);
-            border: none;
-            border-radius: 50px;
-            z-index: 30;
-            transition: 0.5s;
-            position: relative;
-            box-shadow: 0 8px 25px rgba(255, 94, 0, 0.4);
-        }
-        .flower-btn:hover { transform: scale(1.05); box-shadow: 0 12px 30px rgba(255, 94, 0, 0.6); }
-
-        #heart-rain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 8; }
-        .heart { position: absolute; animation: heartFall linear forwards; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
-
-        @keyframes open-flower-petal {
-            0% { transform: translateX(-50%) translateY(50px) rotate(0deg); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translateX(-50%) translateY(0) rotate(var(--rotate-deg)); opacity: 1; }
-        }
-        @keyframes open-flower-center {
-            0% { transform: translateX(-50%) scale(0); opacity: 0; }
-            100% { transform: translateX(-50%) scale(1); opacity: 1; }
-        }
-        @keyframes sway { 0%, 100% { transform: rotate(-1.5deg); } 50% { transform: rotate(1.5deg); } }
-        @keyframes heartFall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
-
-        @media (max-width: 900px) {
-            .content-layout { flex-direction: column; align-items: center; margin-top: 20px; }
-            .text-section { width: 90%; margin-bottom: 20px; max-height: 30vh; }
-            .photo-frame { width: 240px; margin-bottom: 20px; }
-            .bouquet { transform: scale(0.6); height: 300px; margin-top: -50px; }
-            #timer { font-size: 0.9rem; padding: 10px 25px; top: 20px; }
+        .sunflower-flower:hover {
+            transform: scale(1.08) rotate(2deg);
         }
     </style>
 </head>
-<body>
-    
-    <div class="background-visuals">
-        <div class="nebula"></div>
-        <div id="stars-container"></div>
+<body class="bg-slate-950 text-slate-100 min-h-screen overflow-x-hidden font-sans relative select-none">
+
+    <!-- Canvas for Fireworks & Interactive Glows -->
+    <canvas id="fireworks-canvas" class="fixed inset-0 pointer-events-none z-10 w-full h-full"></canvas>
+
+    <!-- Space Nebula & Starfield Background -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute -top-[20%] -left-[10%] w-[140%] h-[140%] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-900/25 via-slate-950 to-slate-950 blur-3xl animate-spin-slow"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-rose-950/20 rounded-full blur-3xl"></div>
+        <div id="stars-container" class="absolute inset-0"></div>
     </div>
-    <canvas id="fireworks-canvas"></canvas>
-    <div class="overlay"></div>
 
-    <audio id="song" src="Flores Amarillas - Floricienta - High Quality.mp3" loop></audio>
-    <div id="heart-rain"></div>
+    <!-- Background Audio Element -->
+    <audio id="audio-player" loop preload="auto">
+        <source src="Flores Amarillas - Floricienta - High Quality.mp3" type="audio/mpeg">
+    </audio>
 
-    <div class="container" id="main-container">
-        <div id="timer">Calculando tiempo...</div>
-        <p id="initial-message">Tengo algo especial para ti...</p>
-        
-        <button class="flower-btn" id="flower-btn">Abrir Sorpresa</button>
-        
-        <div class="content-layout" id="content-layout">
+    <!-- Welcome Modal Overlay -->
+    <div id="welcome-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md transition-opacity duration-1000">
+        <div class="glass-card-glow max-w-md w-full p-8 rounded-3xl text-center flex flex-col items-center space-y-6 transform transition-transform duration-500 hover:scale-[1.01]">
+            <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-amber-500 via-amber-400 to-rose-500 p-1 animate-pulse-glow flex items-center justify-center shadow-lg">
+                <div class="w-full h-full bg-slate-950 rounded-full flex items-center justify-center">
+                    <span class="text-4xl animate-bounce">🌻</span>
+                </div>
+            </div>
             
-            <div class="text-section">
-                <p id="typewriter"></p>
+            <div class="space-y-2">
+                <h1 class="text-3xl font-bold bg-gradient-to-r from-amber-300 via-amber-100 to-rose-300 bg-clip-text text-transparent font-cursive">
+                    Para Mi Amor Especial ✨
+                </h1>
+                <p class="text-slate-300 text-sm font-light leading-relaxed">
+                    Tengo preparado un lugar mágico lleno de nuestras 22 fotos especiales y flores amarillas eternas para ti.
+                </p>
             </div>
 
-            <div class="photo-frame" id="photo-frame">
-                <img id="current-photo" src="" alt="Nuestra foto">
-            </div>
-
-            <div class="bouquet" id="bouquet">
-                <div class="bouquet_ribbon"></div>
-                
-                <div class="sunflower sunflower--2">
-                    <div class="flower_wrapper">
-                        <div class="flower_stem"></div>
-                        <div class="flower_leaf flower_leaf-1"></div>
-                        <div class="flower_leaf flower_leaf-2"></div>
-                        <div class="flower_center"></div>
-                    </div>
-                </div>
-                
-                <div class="sunflower sunflower--3">
-                    <div class="flower_wrapper">
-                        <div class="flower_stem"></div>
-                        <div class="flower_center"></div>
-                    </div>
-                </div>
-                
-                <div class="sunflower sunflower--1">
-                    <div class="flower_wrapper">
-                        <div class="flower_stem"></div>
-                        <div class="flower_center"></div>
-                    </div>
-                </div>
-            </div>
+            <button id="start-btn" class="w-full py-4 px-8 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-450 to-rose-500 text-slate-950 font-bold text-lg shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center space-x-2 group cursor-pointer">
+                <span>Abrir Sorpresa</span>
+                <i class="fa-solid fa-heart text-slate-950 group-hover:scale-125 transition-transform duration-300"></i>
+            </button>
         </div>
     </div>
 
+    <!-- Main Application UI Container -->
+    <div id="app-content" class="relative z-20 min-h-screen flex flex-col justify-between p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto opacity-0 transition-opacity duration-1000 pointer-events-none">
+
+        <!-- Top Header Navigation -->
+        <header class="w-full flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+            <!-- Timer Display -->
+            <div class="glass-card px-6 py-3 rounded-full flex items-center space-x-3 border border-amber-500/30 shadow-lg">
+                <i class="fa-solid fa-hourglass-half text-amber-400 animate-pulse"></i>
+                <div class="text-xs sm:text-sm font-semibold tracking-wider text-amber-100">
+                    <span id="timer-counter">Calculando tiempo juntos...</span>
+                </div>
+            </div>
+
+            <!-- Music Controls Floating Pill -->
+            <div class="glass-card px-5 py-2.5 rounded-full flex items-center space-x-4 border border-slate-700/50">
+                <button id="music-toggle-btn" class="w-10 h-10 rounded-full bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-music" id="music-icon"></i>
+                </button>
+                <div class="flex flex-col text-left pr-2">
+                    <span class="text-xs text-slate-400 font-medium">Música de Fondo</span>
+                    <span class="text-xs text-amber-200 font-bold truncate max-w-[140px]">Flores Amarillas 🌻</span>
+                </div>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.4" class="w-16 accent-amber-400 cursor-pointer hidden sm:block">
+            </div>
+        </header>
+
+        <!-- Center Content Layout Grid -->
+        <main class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center my-auto">
+
+            <!-- Left Column: Typewriter Romantic Letter -->
+            <section class="lg:col-span-4 flex flex-col space-y-4">
+                <div class="glass-card p-6 sm:p-8 rounded-3xl border-l-4 border-l-amber-400 relative overflow-hidden group">
+                    <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/20 transition-all duration-500"></div>
+                    
+                    <h2 class="text-2xl font-cursive font-bold text-amber-300 mb-4 flex items-center gap-2">
+                        <span>Para Mi Amor</span>
+                        <i class="fa-solid fa-sparkles text-amber-400 text-sm"></i>
+                    </h2>
+
+                    <div class="text-slate-200 text-sm sm:text-base leading-relaxed font-light min-h-[220px] max-h-[300px] overflow-y-auto pr-2" id="typewriter-container">
+                        <p id="typewriter" class="typing-cursor whitespace-pre-line"></p>
+                    </div>
+
+                    <div class="mt-4 pt-4 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400">
+                        <span>Te amo con todo mi corazón ❤️</span>
+                        <button id="fireworks-trigger" class="text-amber-400 hover:text-amber-300 font-semibold flex items-center space-x-1 cursor-pointer transition-colors bg-amber-500/10 hover:bg-amber-500/20 px-3 py-1.5 rounded-full border border-amber-500/20">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span>Celebrar ✨</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Middle Column: Dynamic Polaroid Album with 22 Photos -->
+            <section class="lg:col-span-4 flex flex-col items-center justify-center my-4 lg:my-0">
+                <div class="relative w-full max-w-xs sm:max-w-sm flex flex-col items-center">
+                    
+                    <!-- Polaroid Frame -->
+                    <div id="polaroid-wrapper" class="polaroid-frame bg-slate-100 text-slate-900 p-4 pb-14 rounded-xl w-full relative">
+                        <!-- Top Tape Decor -->
+                        <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-28 h-7 bg-amber-200/50 backdrop-blur-sm transform rotate-2 z-10 border border-amber-300/40 shadow-sm"></div>
+                        
+                        <!-- Photo Wrapper -->
+                        <div class="relative w-full aspect-[4/5] rounded-lg overflow-hidden bg-slate-900 group">
+                            <img id="slideshow-img" src="foto1.jpeg" alt="Nuestra Foto" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80';" class="w-full h-full object-cover transition-opacity duration-500">
+                            
+                            <!-- Gallery Control Overlay -->
+                            <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-between px-4">
+                                <button id="prev-photo-btn" class="w-10 h-10 rounded-full bg-slate-900/80 text-amber-400 hover:bg-slate-900 hover:scale-110 transition-all flex items-center justify-center shadow-md">
+                                    <i class="fa-solid fa-chevron-left"></i>
+                                </button>
+                                <button id="next-photo-btn" class="w-10 h-10 rounded-full bg-slate-900/80 text-amber-400 hover:bg-slate-900 hover:scale-110 transition-all flex items-center justify-center shadow-md">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Polaroid Caption -->
+                        <div class="absolute bottom-3 inset-x-0 text-center">
+                            <p id="photo-caption" class="font-cursive text-xl text-slate-800 font-bold truncate px-4">Nuestros Momentos ✨</p>
+                        </div>
+                    </div>
+
+                    <!-- Photo Upload and Counter Bar -->
+                    <div class="mt-5 flex items-center space-x-3">
+                        <label for="photo-upload" class="px-4 py-2 rounded-full bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-500/30 text-xs font-semibold cursor-pointer transition-all flex items-center space-x-2 shadow-md hover:shadow-amber-500/20">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <span>Añadir Fotos</span>
+                        </label>
+                        <input type="file" id="photo-upload" accept="image/*" multiple class="hidden">
+
+                        <span id="photo-count-badge" class="text-xs text-amber-300 font-semibold bg-slate-900/90 px-3.5 py-1.5 rounded-full border border-slate-800 shadow-md">
+                            Foto 1 de 22
+                        </span>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Right Column: Perfectly Formed Vector Sunflowers Bouquet -->
+            <section class="lg:col-span-4 flex flex-col items-center justify-center">
+                <div class="glass-card p-6 rounded-3xl w-full flex flex-col items-center relative overflow-hidden">
+                    <div class="text-center mb-2">
+                        <h3 class="text-xl font-cursive font-bold text-amber-300">Ramo de Flores Amarillas</h3>
+                        <p class="text-xs text-slate-400">Girasoles eternos creados especialmente para ti</p>
+                    </div>
+
+                    <!-- Realistic Vector Sunflowers Bouquet Container -->
+                    <div class="relative w-full h-[360px] flex items-center justify-center cursor-pointer group animate-sway-bouquet" id="bouquet-container" title="¡Haz clic en el ramo para enviar amor!">
+                        
+                        <svg class="w-full h-full max-w-[320px] filter drop-shadow-[0_15px_25px_rgba(245,158,11,0.3)]" viewBox="0 0 400 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- SVG Definitions for Gradients -->
+                            <defs>
+                                <!-- Petal Gradient (Gold to Warm Yellow) -->
+                                <linearGradient id="petal-grad-1" x1="0%" y1="100%" x2="0%" y2="0%">
+                                    <stop offset="0%" stop-color="#D97706" />
+                                    <stop offset="40%" stop-color="#F59E0B" />
+                                    <stop offset="100%" stop-color="#FDE047" />
+                                </linearGradient>
+                                <linearGradient id="petal-grad-2" x1="0%" y1="100%" x2="0%" y2="0%">
+                                    <stop offset="0%" stop-color="#B45309" />
+                                    <stop offset="50%" stop-color="#EAB308" />
+                                    <stop offset="100%" stop-color="#FEF08A" />
+                                </linearGradient>
+                                <!-- Center Texture Radial Gradient -->
+                                <radialGradient id="center-grad" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="#78350F" />
+                                    <stop offset="60%" stop-color="#451A03" />
+                                    <stop offset="90%" stop-color="#270E02" />
+                                    <stop offset="100%" stop-color="#140601" />
+                                </radialGradient>
+                                <radialGradient id="center-ring" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="transparent" />
+                                    <stop offset="70%" stop-color="rgba(245, 158, 11, 0.3)" />
+                                    <stop offset="100%" stop-color="transparent" />
+                                </radialGradient>
+                            </defs>
+
+                            <!-- Stems -->
+                            <path d="M190 380 Q150 280 130 180" stroke="#15803D" stroke-width="14" stroke-linecap="round"/>
+                            <path d="M210 380 Q250 280 270 180" stroke="#15803D" stroke-width="14" stroke-linecap="round"/>
+                            <path d="M200 380 Q200 260 200 130" stroke="#16A34A" stroke-width="16" stroke-linecap="round"/>
+
+                            <!-- Leaves -->
+                            <path d="M165 300 C110 290, 95 240, 150 255 C160 275, 165 300, 165 300 Z" fill="#15803D" stroke="#166534" stroke-width="2"/>
+                            <path d="M235 300 C290 290, 305 240, 250 255 C240 275, 235 300, 235 300 Z" fill="#15803D" stroke="#166534" stroke-width="2"/>
+
+                            <!-- Ribbon Wrap -->
+                            <path d="M150 380 Q200 365 250 380 C260 410, 140 410, 150 380 Z" fill="#BE123C" />
+                            <path d="M175 390 L140 460 L175 445 L200 395 Z" fill="#9F1239" />
+                            <path d="M225 390 L260 460 L225 445 L200 395 Z" fill="#9F1239" />
+                            <circle cx="200" cy="390" r="12" fill="#E11D48" />
+
+                            <!-- SUNFLOWER 1 (Left Top Back) -->
+                            <g transform="translate(130, 180)" class="sunflower-flower">
+                                <g id="flower-1-petals"></g>
+                                <circle cx="0" cy="0" r="30" fill="url(#center-grad)" stroke="#78350F" stroke-width="3"/>
+                                <circle cx="0" cy="0" r="30" fill="url(#center-ring)"/>
+                                <circle cx="0" cy="0" r="22" fill="none" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.6"/>
+                            </g>
+
+                            <!-- SUNFLOWER 2 (Right Top Back) -->
+                            <g transform="translate(270, 180)" class="sunflower-flower">
+                                <g id="flower-2-petals"></g>
+                                <circle cx="0" cy="0" r="30" fill="url(#center-grad)" stroke="#78350F" stroke-width="3"/>
+                                <circle cx="0" cy="0" r="30" fill="url(#center-ring)"/>
+                                <circle cx="0" cy="0" r="22" fill="none" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.6"/>
+                            </g>
+
+                            <!-- SUNFLOWER 3 (Center Main Front) -->
+                            <g transform="translate(200, 130) scale(1.15)" class="sunflower-flower">
+                                <g id="flower-3-petals"></g>
+                                <circle cx="0" cy="0" r="34" fill="url(#center-grad)" stroke="#78350F" stroke-width="3"/>
+                                <circle cx="0" cy="0" r="34" fill="url(#center-ring)"/>
+                                <circle cx="0" cy="0" r="25" fill="none" stroke="#F59E0B" stroke-width="2" stroke-dasharray="4,3" opacity="0.7"/>
+                            </g>
+                        </svg>
+
+                    </div>
+
+                    <p class="text-[11px] text-amber-300/80 italic mt-1 font-medium">✨ Haz clic en el ramo para lanzar fuegos artificiales ✨</p>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="w-full text-center py-4 mt-6 text-xs text-slate-500 border-t border-slate-900/80 flex flex-col sm:flex-row justify-between items-center gap-2">
+            <p>Hecho con ❤️ para celebrar nuestra historia juntos</p>
+            <button id="toggle-ambient-btn" class="hover:text-amber-400 transition-colors">
+                Lluvia de amor: <span id="ambient-status" class="text-amber-400 font-semibold">Activada</span>
+            </button>
+        </footer>
+
+    </div>
+
     <script>
-        // Configuración de Estrellas
-        const starsContainer = document.getElementById('stars-container');
-        const starCount = 150;
-        for (let i = 0; i < starCount; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            const size = Math.random() * 2 + 1;
-            star.style.width = size + 'px';
-            star.style.height = size + 'px';
-            star.style.top = Math.random() * 100 + '%';
-            star.style.left = Math.random() * 100 + '%';
-            star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
-            star.style.animationDelay = Math.random() * 5 + 's';
-            starsContainer.appendChild(star);
+        /* --- CONFIGURATION & STATE --- */
+        const CONFIG = {
+            startDate: new Date(2023, 9, 31, 0, 0, 0), // 31 Octubre 2023
+            loveLetter: "Desde aquel 31 de octubre, mi vida cambió de una manera que nunca imaginé. Cada momento a tu lado es un recuerdo que atesoro. Contigo aprendí que la felicidad está en lo sencillo: una mirada, tu paz, tu forma de hacerme sentir bien. Te has convertido en mi refugio, ese lugar al que siempre quiero volver. Gracias por ser mi alegría en los días grises y llenar mi vida de luz. Te amo muchísimo ✨❤️",
+            totalPhotosCount: 22
+        };
+
+        // Cargar fotos iniciales foto1.jpeg hasta foto22.jpeg
+        let state = {
+            photos: Array.from({ length: CONFIG.totalPhotosCount }, (_, i) => ({
+                url: `foto${i + 1}.jpeg`,
+                caption: `Nuestros Momentos ✨`
+            })),
+            currentPhotoIdx: 0,
+            ambientActive: true,
+            isPlayingAudio: false
+        };
+
+        /* --- DOM ELEMENTS --- */
+        const welcomeModal = document.getElementById('welcome-modal');
+        const startBtn = document.getElementById('start-btn');
+        const appContent = document.getElementById('app-content');
+        const audioPlayer = document.getElementById('audio-player');
+        const musicToggleBtn = document.getElementById('music-toggle-btn');
+        const musicIcon = document.getElementById('music-icon');
+        const volumeSlider = document.getElementById('volume-slider');
+        const timerCounter = document.getElementById('timer-counter');
+        const typewriterEl = document.getElementById('typewriter');
+        const polaroidWrapper = document.getElementById('polaroid-wrapper');
+        const slideshowImg = document.getElementById('slideshow-img');
+        const photoCaption = document.getElementById('photo-caption');
+        const photoCountBadge = document.getElementById('photo-count-badge');
+        const prevPhotoBtn = document.getElementById('prev-photo-btn');
+        const nextPhotoBtn = document.getElementById('next-photo-btn');
+        const photoUpload = document.getElementById('photo-upload');
+        const bouquetContainer = document.getElementById('bouquet-container');
+        const fireworksTrigger = document.getElementById('fireworks-trigger');
+        const toggleAmbientBtn = document.getElementById('toggle-ambient-btn');
+        const ambientStatus = document.getElementById('ambient-status');
+
+        /* --- PERFECT SVG SUNFLOWER PETAL GENERATOR --- */
+        function buildSunflowerPetals(containerId, count = 16) {
+            const group = document.getElementById(containerId);
+            if (!group) return;
+            group.innerHTML = '';
+
+            // Capa 1: Pétalos traseros (Más oscuros y ligeramente más grandes)
+            for (let i = 0; i < count; i++) {
+                const angle = (360 / count) * i;
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", "M 0 0 C -10 -20, -11 -52, 0 -62 C 11 -52, 10 -20, 0 0 Z");
+                path.setAttribute("fill", "url(#petal-grad-1)");
+                path.setAttribute("stroke", "#B45309");
+                path.setAttribute("stroke-width", "0.6");
+                path.setAttribute("transform", `rotate(${angle})`);
+                group.appendChild(path);
+            }
+
+            // Capa 2: Pétalos frontales (Intercalados y brillantes)
+            for (let i = 0; i < count; i++) {
+                const angle = (360 / count) * i + (180 / count);
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", "M 0 0 C -8 -18, -9 -46, 0 -56 C 9 -46, 8 -18, 0 0 Z");
+                path.setAttribute("fill", "url(#petal-grad-2)");
+                path.setAttribute("stroke", "#D97706");
+                path.setAttribute("stroke-width", "0.5");
+                path.setAttribute("transform", `rotate(${angle}) scale(0.92)`);
+                group.appendChild(path);
+            }
         }
 
-        const totalFotos = 22;
-        let fotos = Array.from({length: totalFotos}, (_, i) => `foto${i+1}.jpeg`);
-        const startDate = new Date(2023, 9, 31);
-        const messageText = "Desde aquel 31 de octubre, mi vida cambió de una manera que nunca imaginé. Cada momento a tu lado es un recuerdo que atesoro. Contigo aprendí que la felicidad está en lo sencillo: una mirada, tu paz, tu forma de hacerme sentir bien. Te has convertido en mi refugio, ese lugar al que siempre quiero volver. Gracias por ser mi alegría en los días grises y llenar mi vida de luz. Te amo muchísimo ✨❤️";
+        /* --- BACKGROUND STARS --- */
+        function initStars() {
+            const container = document.getElementById('stars-container');
+            for (let i = 0; i < 90; i++) {
+                const star = document.createElement('div');
+                const size = Math.random() * 2.5 + 1;
+                star.className = 'absolute rounded-full bg-white opacity-40';
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.animation = `twinkle ${Math.random() * 3 + 2}s infinite ease-in-out ${Math.random() * 4}s`;
+                container.appendChild(star);
+            }
+        }
 
-        const photoImg = document.getElementById('current-photo');
-        const photoFrame = document.getElementById('photo-frame');
-        const flowerBtn = document.getElementById("flower-btn");
-        const mainContainer = document.getElementById("main-container");
-        const audio = document.getElementById("song");
-        const typewriterElement = document.getElementById("typewriter");
+        /* --- AMBIENT FLOATING HEARTS & SUNFLOWERS --- */
+        function createAmbientParticle() {
+            if (!state.ambientActive) return;
+
+            const particle = document.createElement('div');
+            particle.className = 'ambient-item';
+            
+            const isSunflower = Math.random() > 0.45;
+            particle.innerHTML = isSunflower ? '🌻' : '❤️';
+            
+            const size = Math.random() * 18 + 14;
+            const left = Math.random() * 95;
+            const duration = Math.random() * 6 + 7;
+            const drift = (Math.random() - 0.5) * 160;
+            const rotation = Math.random() * 360;
+            const maxOpacity = Math.random() * 0.7 + 0.3;
+
+            particle.style.fontSize = `${size}px`;
+            particle.style.left = `${left}vw`;
+            particle.style.animationDuration = `${duration}s`;
+            particle.style.setProperty('--drift', `${drift}px`);
+            particle.style.setProperty('--rotation', `${rotation}deg`);
+            particle.style.setProperty('--max-opacity', maxOpacity);
+
+            document.body.appendChild(particle);
+
+            setTimeout(() => particle.remove(), duration * 1000);
+        }
+
+        /* --- LIVE TIMER COUNTER --- */
+        function updateTimer() {
+            const now = new Date();
+            const diff = now - CONFIG.startDate;
+
+            if (diff < 0) {
+                timerCounter.textContent = "¡Pronto comenzará nuestra historia!";
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            timerCounter.textContent = `Juntos hace: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        /* --- TYPEWRITER EFFECT --- */
+        function typeWriter(text, index = 0) {
+            if (index < text.length) {
+                typewriterEl.textContent = text.substring(0, index + 1);
+                
+                const char = text.charAt(index);
+                let delay = 35;
+                if (char === '.' || char === '!' || char === '?') delay = 350;
+                else if (char === ',') delay = 150;
+
+                const container = document.getElementById('typewriter-container');
+                container.scrollTop = container.scrollHeight;
+
+                setTimeout(() => typeWriter(text, index + 1), delay);
+            }
+        }
+
+        /* --- PHOTO GALLERY & SLIDESHOW --- */
+        function updatePhotoDisplay() {
+            if (state.photos.length === 0) return;
+
+            const photo = state.photos[state.currentPhotoIdx];
+            
+            // Effect transition
+            slideshowImg.style.opacity = '0';
+            
+            setTimeout(() => {
+                slideshowImg.src = photo.url;
+                photoCaption.textContent = photo.caption || "Nuestros Momentos ✨";
+                photoCountBadge.textContent = `Foto ${state.currentPhotoIdx + 1} de ${state.photos.length}`;
+                slideshowImg.style.opacity = '1';
+
+                // Rotate polaroid frame slightly
+                const randomRotate = (Math.random() * 6 - 3).toFixed(1);
+                polaroidWrapper.style.transform = `rotate(${randomRotate}deg)`;
+            }, 300);
+        }
+
+        function nextPhoto() {
+            state.currentPhotoIdx = (state.currentPhotoIdx + 1) % state.photos.length;
+            updatePhotoDisplay();
+        }
+
+        function prevPhoto() {
+            state.currentPhotoIdx = (state.currentPhotoIdx - 1 + state.photos.length) % state.photos.length;
+            updatePhotoDisplay();
+        }
+
+        function handleFileUpload(e) {
+            const files = e.target.files;
+            if (!files || files.length === 0) return;
+
+            Array.from(files).forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    state.photos.push({
+                        url: event.target.result,
+                        caption: file.name.split('.')[0] || "Nuevo Recuerdo ✨"
+                    });
+                    if (index === files.length - 1) {
+                        state.currentPhotoIdx = state.photos.length - files.length;
+                        updatePhotoDisplay();
+                        triggerBurst(window.innerWidth / 2, window.innerHeight / 2);
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        /* --- CANVAS FIREWORKS ENGINE --- */
         const canvas = document.getElementById('fireworks-canvas');
         const ctx = canvas.getContext('2d');
-        const initialMessage = document.getElementById('initial-message');
-
         let particles = [];
-        const colors = ['#FFD700', '#FF69B4', '#00BFFF', '#ADFF2F', '#FFFFFF'];
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize); resize();
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
 
         class FireworkParticle {
             constructor(x, y, color) {
-                this.x = x; this.y = y; this.color = color;
-                this.vel = { x: (Math.random() - 0.5) * 6, y: (Math.random() - 0.5) * 6 };
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 6 + 1.5;
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed;
                 this.alpha = 1;
+                this.decay = Math.random() * 0.02 + 0.015;
+                this.gravity = 0.08;
             }
-            draw() { ctx.globalAlpha = this.alpha; ctx.beginPath(); ctx.arc(this.x, this.y, 2, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.fill(); }
-            update() { this.x += this.vel.x; this.y += this.vel.y; this.alpha -= 0.01; }
-        }
 
-        function createFirework() {
-            const x = Math.random() * canvas.width;
-            const y = Math.random() * (canvas.height * 0.5);
-            for(let i=0; i<30; i++) particles.push(new FireworkParticle(x, y, colors[Math.floor(Math.random() * colors.length)]));
-        }
+            update() {
+                this.vx *= 0.98;
+                this.vy *= 0.98;
+                this.vy += this.gravity;
+                this.x += this.vx;
+                this.y += this.vy;
+                this.alpha -= this.decay;
+            }
 
-        function createAmbientParticle() {
-            const p = document.createElement('div');
-            p.className = 'ambient-particle';
-            const size = Math.random() * 4 + 2;
-            p.style.width = size + 'px';
-            p.style.height = size + 'px';
-            p.style.left = Math.random() * 100 + 'vw';
-            p.style.bottom = '-20px';
-            p.style.animationDuration = (Math.random() * 8 + 7) + 's';
-            p.style.opacity = Math.random() * 0.5;
-            document.body.appendChild(p);
-            setTimeout(() => p.remove(), 15000);
-        }
-        setInterval(createAmbientParticle, 500);
-
-        function animate() {
-            ctx.clearRect(0,0, canvas.width, canvas.height);
-            particles.forEach((p, i) => { p.update(); p.draw(); if(p.alpha <= 0) particles.splice(i, 1); });
-            requestAnimationFrame(animate);
-        }
-
-        let currentIdx = 0;
-        function shuffle(a) { return a.sort(() => Math.random() - 0.5); }
-        shuffle(fotos);
-
-        function changePhoto() {
-            photoImg.style.opacity = 0;
-            setTimeout(() => {
-                photoImg.src = fotos[currentIdx];
-                photoImg.style.opacity = 1;
-                currentIdx = (currentIdx + 1) % fotos.length;
-                photoFrame.style.transform = `rotate(${(Math.random() * 6) - 3}deg)`;
-            }, 500);
-        }
-
-        function updateTimer() {
-            const diff = new Date() - startDate;
-            const d = Math.floor(diff / 86400000);
-            const h = Math.floor((diff / 3600000) % 24);
-            const m = Math.floor((diff / 60000) % 60);
-            const s = Math.floor((diff / 1000) % 60);
-            document.getElementById('timer').innerText = `Juntos hace: ${d}d ${h}h ${m}m ${s}s`;
-        }
-
-        function typeWriter(text, i = 0) {
-            if (i < text.length) {
-                typewriterElement.innerHTML += text.charAt(i);
-                typewriterElement.scrollTop = typewriterElement.scrollHeight;
-                let speed = (text.charAt(i) === '.' || text.charAt(i) === '!' || text.charAt(i) === '?') ? 400 : 50;
-                setTimeout(() => typeWriter(text, i + 1), speed);
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, this.alpha);
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 2.8, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color;
+                ctx.fill();
+                ctx.restore();
             }
         }
 
-        function createHeart() {
-            const h = document.createElement('div');
-            h.className = 'heart';
-            h.innerHTML = Math.random() > 0.5 ? '🌻' : '❤️';
-            h.style.left = Math.random() * 100 + 'vw';
-            h.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            h.style.animationDuration = (Math.random() * 3 + 3) + 's';
-            document.getElementById('heart-rain').appendChild(h);
-            setTimeout(() => h.remove(), 5000);
+        function triggerBurst(x, y) {
+            const colors = ['#F59E0B', '#FCD34D', '#F43F5E', '#FB7185', '#38BDF8', '#FEF08A', '#FFFFFF'];
+            for (let i = 0; i < 50; i++) {
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particles.push(new FireworkParticle(x, y, color));
+            }
         }
 
-        document.querySelectorAll('.sunflower').forEach(flower => {
-            const wrapper = flower.querySelector('.flower_wrapper');
-            const flowerDelay = parseFloat(getComputedStyle(flower).getPropertyValue('--base-delay')) || 0;
-            for (let i = 0; i < 12; i++) {
-                const p = document.createElement('div');
-                p.className = 'flower_petal';
-                p.style.setProperty('--rotate-deg', `${i * 30}deg`);
-                p.style.animationDelay = `${flowerDelay + 1.2 + (i * 0.05)}s`;
-                wrapper.appendChild(p);
-            }
-        });
+        function launchRandomFirework() {
+            const x = Math.random() * (canvas.width * 0.8) + canvas.width * 0.1;
+            const y = Math.random() * (canvas.height * 0.4) + canvas.height * 0.1;
+            triggerBurst(x, y);
+        }
 
-        flowerBtn.addEventListener('click', () => {
-            mainContainer.classList.add("active");
-            audio.volume = 0.4;
-            audio.play();
-            
-            flowerBtn.style.display = 'none';
-            initialMessage.style.display = 'none';
-            
-            photoFrame.style.display = 'block';
-            changePhoto();
-            setInterval(changePhoto, 5000);
-            
-            setInterval(updateTimer, 1000);
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach((p, index) => {
+                p.update();
+                p.draw();
+                if (p.alpha <= 0) particles.splice(index, 1);
+            });
+
+            requestAnimationFrame(animateCanvas);
+        }
+
+        /* --- AUDIO CONTROLS --- */
+        function toggleAudio() {
+            if (state.isPlayingAudio) {
+                audioPlayer.pause();
+                musicIcon.className = "fa-solid fa-music";
+                state.isPlayingAudio = false;
+            } else {
+                audioPlayer.play().then(() => {
+                    musicIcon.className = "fa-solid fa-compact-disc animate-spin";
+                    state.isPlayingAudio = true;
+                }).catch(err => {
+                    console.log("Audio autostart prevented:", err);
+                });
+            }
+        }
+
+        /* --- INITIALIZATION --- */
+        window.addEventListener('DOMContentLoaded', () => {
+            // Build Perfect Sunflower Petals
+            buildSunflowerPetals('flower-1-petals', 16);
+            buildSunflowerPetals('flower-2-petals', 16);
+            buildSunflowerPetals('flower-3-petals', 18);
+
+            // Initialize Backgrounds
+            initStars();
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            animateCanvas();
+
+            // Init Photo Display
+            updatePhotoDisplay();
+
+            // Timers & Intervals
             updateTimer();
-            animate();
-            setInterval(createFirework, 2000);
+            setInterval(updateTimer, 1000);
+            setInterval(createAmbientParticle, 450);
 
-            setTimeout(() => {
-                typeWriter(messageText);
-                setInterval(createHeart, 400);
-            }, 3000);
+            // Auto Slideshow (Every 5s)
+            setInterval(() => {
+                if (state.photos.length > 1) nextPhoto();
+            }, 5000);
+
+            // Start Button Click Handler
+            startBtn.addEventListener('click', () => {
+                welcomeModal.classList.add('opacity-0', 'pointer-events-none');
+                
+                setTimeout(() => {
+                    welcomeModal.style.display = 'none';
+                    appContent.classList.remove('opacity-0', 'pointer-events-none');
+                    appContent.classList.add('opacity-100');
+
+                    // Audio
+                    toggleAudio();
+
+                    // Start Typewriter
+                    setTimeout(() => typeWriter(CONFIG.loveLetter), 400);
+
+                    // Launch Celebration Fireworks
+                    setTimeout(() => {
+                        launchRandomFirework();
+                        setTimeout(launchRandomFirework, 400);
+                        setTimeout(launchRandomFirework, 800);
+                    }, 800);
+
+                }, 800);
+            });
+
+            // Control Listeners
+            musicToggleBtn.addEventListener('click', toggleAudio);
+            volumeSlider.addEventListener('input', (e) => {
+                audioPlayer.volume = e.target.value;
+            });
+
+            nextPhotoBtn.addEventListener('click', nextPhoto);
+            prevPhotoBtn.addEventListener('click', prevPhoto);
+            photoUpload.addEventListener('change', handleFileUpload);
+
+            fireworksTrigger.addEventListener('click', () => {
+                launchRandomFirework();
+                setTimeout(launchRandomFirework, 300);
+                setTimeout(launchRandomFirework, 600);
+            });
+
+            bouquetContainer.addEventListener('click', (e) => {
+                const rect = bouquetContainer.getBoundingClientRect();
+                triggerBurst(rect.left + rect.width / 2, rect.top + rect.height / 3);
+
+                for (let i = 0; i < 6; i++) {
+                    createAmbientParticle();
+                }
+            });
+
+            toggleAmbientBtn.addEventListener('click', () => {
+                state.ambientActive = !state.ambientActive;
+                ambientStatus.textContent = state.ambientActive ? 'Activada' : 'Desactivada';
+                ambientStatus.className = state.ambientActive ? 'text-amber-400 font-semibold' : 'text-slate-500';
+            });
         });
     </script>
 </body>
